@@ -20,6 +20,10 @@ if(!empty($industries )) {
     <label for="keyword">Search By Keyword or Name</label>
   </div>
   <div class="form-group">
+    <input type="text" class="form-control" id="speciality" name="speciality" placeholder="Name or Keyword" aria-label="Select Specialty">
+    <label for="speciality">Search By Speciality</label>
+  </div>
+  <div class="form-group">
         <select class="form-select" id="industry_select" name="industry_select" aria-label="Select Industry">
             <?php echo $industry_options; ?>
         </select>
