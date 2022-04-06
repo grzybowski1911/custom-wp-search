@@ -114,8 +114,14 @@ function custom_search( $query ) {
     if ( is_archive('experts') && $query->is_main_query() && !is_admin() ) {
 
         $keyword = get_query_var( 'keyword', FALSE );
-        $industry_select = get_query_var( 'industry_select', FALSE );
-        $speciality_select = get_query_var( 'speciality', FALSE );
+        $industry_select = strtolower(str_replace(' ', '-', get_query_var( 'industry_select', FALSE ) ));
+        $speciality_select = strtolower(str_replace(' ', '-', get_query_var( 'speciality', FALSE ) ));
+
+
+        //$speciality_select = strtolower(str_replace(' ', '-', $speciality_select ));
+
+        error_log($speciality_select);
+        
 
         // Keywords query
         $keyword ? $keyword : $keyword = null;
@@ -127,14 +133,21 @@ function custom_search( $query ) {
         //$status_list ? array_push($meta_query_array, array('key' => 'status_job', 'value' => '"' . $status_list . '"', 'compare' => 'LIKE') ) : null ;
         //$query->set( 'meta_query', $meta_query_array );
         
+
+        // Build taxonomy array based on what's been filled out 
+
+        if($industry_select) {
+            
+        }
+
         // Taxonomies query
 
         $tax_query_array = array('relation' => 'OR');
-        $speciality_select ? array_push($tax_query_array, array('taxonomy' => 'experts_specialities', 'field' => 'term_id', 'terms' => $speciality_select) ) : null ;
+        $speciality_select ? array_push($tax_query_array, array('taxonomy' => 'experts_specialities', 'field' => 'slug', 'terms' => $speciality_select) ) : null ;
         $query->set( 'tax_query', $tax_query_array);
 
         $tax_query_array = array('relation' => 'OR');
-        $industry_select ? array_push($tax_query_array, array('taxonomy' => 'experts_industries', 'field' => 'term_id', 'terms' => $industry_select) ) : null ;
+        $industry_select ? array_push($tax_query_array, array('taxonomy' => 'experts_industries', 'field' => 'slug', 'terms' => $industry_select) ) : null ;
         $query->set( 'tax_query', $tax_query_array);
     }
 }

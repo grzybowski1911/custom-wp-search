@@ -24,10 +24,14 @@ if(!empty($industries )) {
     <label for="speciality">Search By Speciality</label>
   </div>
   <div class="form-group">
+    <input type="text" class="form-control" id="industry_select" name="industry_select" aria-label="Select Industry">
+    <label for="industry_select">Select Industry</label>
+  </div>
+  <!--<div class="form-group">
         <select class="form-select" id="industry_select" name="industry_select" aria-label="Select Industry">
-            <?php echo $industry_options; ?>
+            <?php //echo $industry_options; ?>
         </select>
         <label for="industry_select">Select Industry</label>
-  </div>
+  </div>-->
   <button type="submit" class="btn btn-outline-primary btn-lg">Start Search</button>
 </form>
