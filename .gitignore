@@ -1,37 +1,37 @@
-	.DS_Store
-	.browserslistrc
-	.editorconfig
-	404.php
-	LICENSE
-	archive.php
-	author.php
-	comments.php
-	composer.json
-	composer.lock
-	css/
-	fonts/
-	footer.php
-	functions.php
-	global-templates/
-	header.php
-	inc/
-	index.php
-	js/
-	languages/
-	loop-templates/
-	node_modules/
-	package-lock.json
-	package.json
-	page-templates/
-	page.php
-	phpcs.xml.dist
-	readme.txt
-	screenshot.png
-	search.php
-	searchform.php
-	sidebar-templates/
-	sidebar.php
-	single.php
-	src/
-	style.css
-	woocommerce/
+.DS_Store
+.browserslistrc
+.editorconfig
+404.php
+LICENSE
+archive.php
+author.php
+comments.php
+composer.json
+composer.lock
+css/
+fonts/
+footer.php
+functions.php
+global-templates/
+header.php
+inc/
+index.php
+js/
+languages/
+loop-templates/
+node_modules/
+package-lock.json
+package.json
+page-templates/
+page.php
+phpcs.xml.dist
+readme.txt
+screenshot.png
+search.php
+searchform.php
+sidebar-templates/
+sidebar.php
+single.php
+src/
+style.css
+woocommerce/
