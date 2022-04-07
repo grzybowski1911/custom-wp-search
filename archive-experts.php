@@ -25,6 +25,15 @@
                         echo 'no taxonomy';
                     }
                     ?></p>
+                    <p><?php 
+                    $terms = get_the_terms( $post->ID, 'experts_locations' );
+                    if($terms) {
+                        $terms_string = join(', ', wp_list_pluck($terms, 'name'));
+                        echo $terms_string; 
+                    } else {
+                        echo 'no taxonomy';
+                    }
+                    ?></p>
             <?php
             }
             ?>

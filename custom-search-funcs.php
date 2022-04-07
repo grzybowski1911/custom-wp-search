@@ -89,6 +89,34 @@ function expert_cpt() {
 			)
 		)
 	);
+    $location_labels = array(
+		'name'               => _x( 'Expert Locations', 'expert_locations' ),
+		'singular_name'      => _x( 'Expert Location', 'expert_location' ),
+		'add_new'            => _x( 'Add New', 'Expert Location' ),
+		'add_new_item'       => __( 'Add New Expert Location' ),
+		'edit_item'          => __( 'Edit Expert Location' ),
+		'new_item'           => __( 'New Expert Location' ),
+		'all_items'          => __( 'All Expert Locations' ),
+		'view_item'          => __( 'View Expert Locations' ),
+		'search_items'       => __( 'Search Expert Locations' ),
+		'not_found'          => __( 'No Expert Locations found' ),
+		'not_found_in_trash' => __( 'No Expert Locations found in the Trash' ),
+		'menu_name'          => 'Expert Locations',
+	  );
+	register_taxonomy(
+		'experts_locations',  // name of the taxonomy. 
+		'experts',             // post type name
+		array(
+			'hierarchical' => true,
+			'labels' => $location_labels, // custom labels
+			'query_var' => true,
+			'show_in_rest'  => true,
+			'rewrite' => array(
+				'slug' => 'expert_locations',    // This controls the base slug that will display before each term
+				'with_front' => false  // Don't display the category base before
+			)
+		)
+	);
  }
  add_action( 'init', 'experts_taxonomy');
 
@@ -103,6 +131,7 @@ function custom_search_query_vars_filter( $vars ) {
     $vars[] .= 'keyword';
     $vars[] .= 'industry_select';
     $vars[] .= 'speciality';
+    $vars[] .= 'location_select';
     return $vars;
 }
 add_filter( 'query_vars', 'custom_search_query_vars_filter' );
@@ -111,17 +140,12 @@ add_filter( 'query_vars', 'custom_search_query_vars_filter' );
 SEARCH QUERY
 =================================================== */
 function custom_search( $query ) {
-    if ( is_archive('experts') && $query->is_main_query() && !is_admin() ) {
+    if ( is_post_type_archive( 'experts' ) && $query->is_main_query() && !is_admin() ) {
 
         $keyword = get_query_var( 'keyword', FALSE );
         $industry_select = strtolower(str_replace(' ', '-', get_query_var( 'industry_select', FALSE ) ));
         $speciality_select = strtolower(str_replace(' ', '-', get_query_var( 'speciality', FALSE ) ));
-
-
-        //$speciality_select = strtolower(str_replace(' ', '-', $speciality_select ));
-
-        error_log($speciality_select);
-        
+        $location_select = strtolower(str_replace(' ', '-', get_query_var( 'location_select', FALSE ) ));
 
         // Keywords query
         $keyword ? $keyword : $keyword = null;
@@ -136,19 +160,13 @@ function custom_search( $query ) {
 
         // Build taxonomy array based on what's been filled out 
 
-        if($industry_select) {
-            
-        }
+            $tax_query_array = array('relation' => 'AND');
+            $location_select ? array_push($tax_query_array, array('taxonomy' => 'experts_locations', 'field' => 'slug', 'terms' => $location_select) ) : null ;
+            $speciality_select ? array_push($tax_query_array, array('taxonomy' => 'experts_specialities', 'field' => 'slug', 'terms' => $speciality_select) ) : null ;
+            $industry_select ? array_push($tax_query_array, array('taxonomy' => 'experts_industries', 'field' => 'slug', 'terms' => $industry_select) ) : null ;
 
-        // Taxonomies query
-
-        $tax_query_array = array('relation' => 'OR');
-        $speciality_select ? array_push($tax_query_array, array('taxonomy' => 'experts_specialities', 'field' => 'slug', 'terms' => $speciality_select) ) : null ;
         $query->set( 'tax_query', $tax_query_array);
 
-        $tax_query_array = array('relation' => 'OR');
-        $industry_select ? array_push($tax_query_array, array('taxonomy' => 'experts_industries', 'field' => 'slug', 'terms' => $industry_select) ) : null ;
-        $query->set( 'tax_query', $tax_query_array);
     }
 }
 add_action( 'pre_get_posts', 'custom_search' );

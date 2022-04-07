@@ -27,6 +27,10 @@ if(!empty($industries )) {
     <input type="text" class="form-control" id="industry_select" name="industry_select" aria-label="Select Industry">
     <label for="industry_select">Select Industry</label>
   </div>
+  <div class="form-group">
+    <input type="text" class="form-control" id="location_select" name="location_select" aria-label="Select Location">
+    <label for="location_select">Select Location</label>
+  </div>
   <!--<div class="form-group">
         <select class="form-select" id="industry_select" name="industry_select" aria-label="Select Industry">
             <?php //echo $industry_options; ?>
