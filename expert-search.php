@@ -1,16 +1,17 @@
 <?php
-$industries = get_terms( array(
-    'taxonomy'          => 'experts_industries',
-    'hide_empty'        => false,
-) );
-if(!empty($industries )) {
-    $industry_options .= '<option value="">-- Expert Industries --</option>';
-    foreach($industries  as $industry) {
-        $industry_options .= '<option value="'.$industry->term_id.'">'.$industry->name.'</option>';
-    }
-} else {
-    $industry .= 'Nothing here';
-}
+// saving this in case a dropdown is ever requested in the future 
+// $industries = get_terms( array(
+//     'taxonomy'          => 'experts_industries',
+//     'hide_empty'        => false,
+// ) );
+// if(!empty($industries )) {
+//     $industry_options .= '<option value="">-- Expert Industries --</option>';
+//     foreach($industries  as $industry) {
+//         $industry_options .= '<option value="'.$industry->term_id.'">'.$industry->name.'</option>';
+//     }
+// } else {
+//     $industry .= 'Nothing here';
+// }
 ?>
 
 
