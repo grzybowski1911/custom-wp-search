@@ -196,3 +196,33 @@ function custom_search( $query ) {
     }
 }
 add_action( 'pre_get_posts', 'custom_search' );
+
+/*=================================================
+ADD TAXONOMY TO CONTENT AREA SO WP SEARCH MATCHES CUSTOM TAXONOMY 
+=================================================== */
+function change_content_on_save($post_id, $post, $update) {
+    if( "experts" == get_post_type() ) {
+        // create content to add 
+        $postID = get_the_ID();
+        $industry_tax_terms = strip_tags(get_the_term_list( $post->ID, 'experts_industries', '', ', ' ));
+        $spec_tax_terms = strip_tags(get_the_term_list( $post->ID, 'experts_specialities', '', ', ' ));
+        $loc_tax_term = strip_tags(get_the_term_list( $post->ID, 'experts_locations', '', ', ' ));
+        $add_content = $industry_tax_terms . ' ' . $spec_tax_terms . ' ' . $loc_tax_term;
+        //error_log(print_r($add_content, true));
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_POST))
+        return;
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+            return;
+        if (!current_user_can('edit_post', $post_id))
+            return;
+        
+        // create your terms list and insert to content here:
+        $post->post_content = $add_content;
+        
+        // Delete hook to avoid endless loop
+        remove_action('save_post', 'change_content_on_save', 10);
+        wp_update_post($post);
+    }
+  }
+add_action( 'save_post', 'change_content_on_save', 10, 3 );
