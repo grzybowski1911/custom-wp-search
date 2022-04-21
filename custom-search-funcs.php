@@ -152,6 +152,32 @@ function custom_search( $query ) {
 
         $query->set('s', $keyword);
 
+
+        // create list of terms similar to what the user typed in
+		// creates a "broad" match type instead of requiring a user type in the taxonomies exactly as they have been input through the dashboard
+
+        $broad_match_ind = get_terms( array(
+            'taxonomy' => 'experts_industries',
+            'fields' => 'slugs', 
+            'name__like' => $industry_select,
+            'hide_empty' => false 
+        ) );
+
+        $broad_match_spec = get_terms( array(
+            'taxonomy' => 'experts_specialities',
+            'fields' => 'slugs', 
+            'name__like' => $speciality_select,
+            'hide_empty' => false 
+        ) );
+
+        $broad_match_loc = get_terms( array(
+            'taxonomy' => 'experts_locations',
+            'fields' => 'slugs', 
+            'name__like' => $location_select,
+            'hide_empty' => false 
+        ) );        
+
+
         // Custom fields query
         //$meta_query_array = array('relation' => 'AND');
         //$status_list ? array_push($meta_query_array, array('key' => 'status_job', 'value' => '"' . $status_list . '"', 'compare' => 'LIKE') ) : null ;
@@ -160,10 +186,10 @@ function custom_search( $query ) {
 
         // Build taxonomy array based on what's been filled out 
 
-            $tax_query_array = array('relation' => 'AND');
-            $location_select ? array_push($tax_query_array, array('taxonomy' => 'experts_locations', 'field' => 'slug', 'terms' => $location_select) ) : null ;
-            $speciality_select ? array_push($tax_query_array, array('taxonomy' => 'experts_specialities', 'field' => 'slug', 'terms' => $speciality_select) ) : null ;
-            $industry_select ? array_push($tax_query_array, array('taxonomy' => 'experts_industries', 'field' => 'slug', 'terms' => $industry_select) ) : null ;
+        $tax_query_array = array('relation' => 'OR');
+        $location_select ? array_push($tax_query_array, array('taxonomy' => 'experts_locations', 'field' => 'slug', 'terms' => $broad_match_loc) ) : null ;
+        $speciality_select ? array_push($tax_query_array, array('taxonomy' => 'experts_specialities', 'field' => 'slug', 'terms' => $broad_match_spec) ) : null ;
+        $industry_select ? array_push($tax_query_array, array('taxonomy' => 'experts_industries', 'field' => 'slug', 'terms' => $broad_match_ind) ) : null ;
 
         $query->set( 'tax_query', $tax_query_array);
 
