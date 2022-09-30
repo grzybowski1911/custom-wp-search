@@ -38,6 +38,11 @@
             }
             ?>
         </div>
+        <!-- adding ajax boiler plate code 
+            <div id="no-more">No More Designs!</div>
+            <div id="loaderDiv"><img id="loaderImg" src="/wp-content/uploads/2022/07/signal-tattoo-transparent.png" alt=""></div>
+            <span id="load-more">View More</span>
+        -->
         <div class="col-12">
             <?php understrap_pagination(); ?>
         </div>

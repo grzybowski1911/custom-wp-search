@@ -231,3 +231,43 @@ function change_content_on_save($post_id, $post, $update) {
     }
   }
 add_action( 'save_post', 'change_content_on_save', 10, 3 );
+
+/*=================================================
+AJAX LOAD MORE
+=================================================== */
+
+function load_more_flash() {
+
+	$ajaxposts = new WP_Query([
+	  'post_type' => 'flash-tattoos',
+	  'posts_per_page' => 4,
+	  'orderby' => 'date',
+	  'order' => 'DESC',
+	  'paged' => $_POST['paged'],
+	]);
+  
+	$response = [];
+  
+	if($ajaxposts->have_posts()) { while($ajaxposts->have_posts()) : $ajaxposts->the_post();
+		// build array of fields we need to build the flash tattoo cards
+		$current_post = [];
+		$title = get_the_title();
+		array_push($current_post, $title);
+		$flash_img = get_field('image_of_tattoo'); 
+		array_push($current_post, $flash_img['url']);
+		$artist = get_the_terms(get_the_ID(), 'Artists');
+		array_push($current_post, $artist[0]->name);
+		$size = get_the_terms(get_the_ID(), 'tattoo_sizes');
+		array_push($current_post, $size[0]->name);
+		$permalink = get_permalink(get_the_ID());
+		array_push($current_post, $permalink);
+		// add array built above to the response array 
+		array_push($response, $current_post);
+	  endwhile;
+	} 
+	// send the response as json to parse in JS
+	echo(json_encode($response));
+	die();
+  }
+  add_action('wp_ajax_load_more_flash', 'load_more_flash');
+  add_action('wp_ajax_nopriv_load_more_flash', 'load_more_flash');
