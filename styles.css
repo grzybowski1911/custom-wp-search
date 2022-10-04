@@ -1,0 +1,17 @@
+#loaderDiv, #no-more {
+    display: none;
+    text-align: center;
+}
+
+#loaderImg {
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+    animation: fader 1.5s linear infinite;
+}
+
+@keyframes fader {
+    0% { opacity: .25; }
+    50% { opacity: 1; }
+    100% { opacity: .25; }
+}
